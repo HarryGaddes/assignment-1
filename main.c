@@ -50,18 +50,9 @@ for (i = 0; i <= 3; i++){
         }
     }
 }
- /*x = i+65;
-        x = (x + 1) % 26;
-        printf("%c %d %c %d %c\n", i, i, x+65, x, alph[i] );
-        //printf("%c\n", alph[x]);
-int subenc(){
-    //char alph[26] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    char sub[26] = "QWERTYUIOPASDFGHJKLZXCVBNM";
-    char tst[] = "TEST";
-    int x, j;
-    for(i = 0; i <= 3; i++){
-        x = test[i] - 65;
-        j = sub[x]; 
-        printf("%c\n", j);
-    }*/
+
+// ok maybe for the rotation cipher i could find 3 letter words (if there are any) and see if the letters e.g. t and h are the same distance apart 
+// and if they are, adjust the cipher accordingly. and if they aren't i can test the first two letters again for a & n this time (testing for and)
+// if both of these don't work then idk they should work. it's only a question of writing the code now. i think first i should make these algorythms work 
+// for strings on an unknown length first which shouldn't be too hard. 
 }
