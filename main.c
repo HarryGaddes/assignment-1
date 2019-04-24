@@ -19,7 +19,7 @@ int main()
             rot_dec();
         break;
         default:
-            printf("ERROR: INVALID OPTION NUMBER");
+            printf("\nERROR: INVALID OPTION NUMBER");
     }
 }
 void rot_enc(void){
@@ -32,7 +32,7 @@ void rot_enc(void){
     printf("\nYour encrypted text is: ");
     for(i = 0; str[i] != '\0'; i++){ 
         if(str[i] <= 90 && str[i] >= 65){          
-            x = str[i] - 65
+            x = str[i] - 65;
             x = (x + k)%26;
             x = x + 65;
             printf("%c", x);
@@ -75,5 +75,5 @@ void rot_dec(void){
             printf("%c", str[i]);
         }
     }
-    
+    printf("\n");
 }
