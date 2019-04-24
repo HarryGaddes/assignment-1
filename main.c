@@ -1,6 +1,7 @@
 #include <stdio.h>
 void rot_enc(void);
 void rot_dec(void);
+void sub_enc(void);
 int main()
 {
     int option;
@@ -18,6 +19,11 @@ int main()
         case 2:
             rot_dec();
         break;
+        case 3:
+            sub_enc();
+        break;
+//        case 4;
+//        break;
         default:
             printf("\nERROR: INVALID OPTION NUMBER");
     }
@@ -70,6 +76,30 @@ void rot_dec(void){
             }
 
           }
+        else
+        {
+            printf("%c", str[i]);
+        }
+    }
+    printf("\n");
+}
+
+void sub_enc(void){
+    int x, i;
+    char sub[25];
+    char str[200];
+    printf("\nPlease enter the plain text you wish to encrypt: ");
+    scanf("%s", str);
+    printf("\nEnter the substitution key you wish to use to encrypt the text (26 unique capital letters): ");
+    scanf("%s", sub);
+    printf("\nYour decrypted text is: ");
+    for(i = 0; str[i] != '\0'; i++)
+    { 
+        if(str[i] <= 90 && str[i] >= 65)
+        {  
+            x = str[i] - 65; 
+            printf("%c", sub[x]);
+        }
         else
         {
             printf("%c", str[i]);
