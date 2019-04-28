@@ -19,6 +19,7 @@ void rot_enc(void); //rot_enc = rotation encryption function
 void rot_dec(void); //rot_dec = rotation decryption function
 void sub_enc(void); //sub_enc = substitution encryption function
 void sub_dec(void); //sub_dec = substitution decryption function
+void rot_dec_noKey(void);
 int main()
 {
     int option; // initialization of integer used for menu selection
@@ -27,6 +28,7 @@ int main()
     printf("2: Dectyption of a rotation cipher (given a key)\n");
     printf("3: Encryption of a substitution cipher (given a key)\n");
     printf("4: Dectyption of a substitution cipher (given a key)\n");
+    printf("5: Decryption of a rotation cipher (with no given key)\n");
     printf("Please enter a number of the option you with to choose: ");
     scanf("%d", &option); //takes user input, selecting a menu option.
     switch (option){ //depending on user option, calls one of the functions declared above.
@@ -41,6 +43,9 @@ int main()
         break;
         case 4:
             sub_dec(); //calls the sub_dec function
+        break;
+        case 5:
+            rot_dec_noKey();
         break;
         default:
             printf("\nERROR: INVALID OPTION NUMBER");
@@ -284,3 +289,102 @@ void sub_dec(void){
 
     printf("\n"); //print a new line so it looks better in the terminal
 }
+
+void rot_dec_noKey(void){
+    int i, count, sc, ph, k, x, n;
+    char str[200];
+    char fileName[50];
+    printf("\nPlease enter the name of the encrypted text file\nyou wish to decrypt: ");
+    scanf("%s", fileName);
+    
+    FILE *input; //initialize input with FILE datatype 
+    input = fopen(fileName, "r"); //use the fopen() function to open the text file set to read only
+    //with "r"
+    if(input == NULL) //tests whether fopen has successfully opened a file
+    {
+        perror("fopen()"); //if fopen has not successfully opened a file perror will print a user 
+        //friendly error message
+        return; //returns a void value in order to conclude the rot_enc function
+    }       
+    while(!feof(input)) //while the position of input is not at the end of the file
+    {
+        fscanf(input, "%[^\n]s", str); //assign characters read from the file to str
+    }
+    for(n = 0; str[n] != '\0'; n++) 
+    {         
+        if(str[n] <= 90 && str[n] >= 65) 
+        {
+            count++;
+        }
+        else if(count == 3)
+        {
+            if ((str[n - 3] - str[n - 2]) == 'T' - 'H' || (str[n - 3] - str[n - 2] - 26) == 'T' - 'H'){
+                ph = str[n - 3] - 'T';
+                if (ph < 0)
+                {
+                    ph = ph + 26;
+                }
+                sc = 1;
+                
+            }
+            else if ((str[n - 3] - str[n - 2]) == 'A' - 'N' || (str[n - 3] - str[n - 2] - 26) == 'A' - 'N'){
+                ph = str[n - 3] - 'A';
+                if (ph < 0)
+                {
+                    ph = ph + 26;
+                }
+                sc = 2;
+            }
+            else 
+            {
+            count = 0;
+            }
+
+        }
+        else
+        {
+            count = 0;
+        }
+    }
+    switch (sc){
+    case 1:
+        k = ph;
+    break;
+    case 2:
+        k = ph;
+    break;
+    default:
+        printf("decryption unavailable");
+    }
+    for(i = 0; str[i] != '\0'; i++) //for each letter in str until it is null-terminated
+    {         
+        if(str[i] <= 90 && str[i] >= 65) //includes only capital letters in the encryption
+        {          
+            x = str[i] - 65; //takes 65 off the ASCII value of the character
+            x = (x - k)%26; //deducts the key (k) from x, therefore "rotating" it backward to 
+            //its unencrypted value
+            if (x < 0) //in order to circumvent errors arising the value of x being less than k (resulting 
+            // in a negative value for x)
+            {
+                x = x + 26 + 65; //perform a full rotation by adding 26 (resulting in a poisitive number
+                // in the correct position) and add 65 to give it the correct ASCII value 
+                printf("%c", x); //print the letter
+            } 
+            else //if it's not negative
+            {
+                x = x + 65; // add 65 to give it the correct ASCII value
+                printf("%c", x); //print the letter
+            }
+
+          }
+        else //if it's not a capital letter
+        {
+            printf("%c", str[i]); //print the un-changed character
+        }
+    }
+        
+    printf("\n");
+}
+
+
+
