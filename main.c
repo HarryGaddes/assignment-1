@@ -2,7 +2,7 @@
 
 In order to operate this code an ./a.out command is required to be input to the terminal.
 This is because of several scanf functions which require user input throughout the program.
-This program uses (4) function prototypes in order to keep the main function concise and 
+This program uses (5) function prototypes in order to keep the main function concise and 
 easy to read. Therefore when looking at the main function the user may get an idea of the 
 program's functionality and structure. 
 It is at the users discretion whether he or she decides to create a new text file to input 
@@ -290,6 +290,20 @@ void sub_dec(void){
     printf("\n"); //print a new line so it looks better in the terminal
 }
 
+/* Decryption of rotation cipher without a key:
+ * 
+ * This function works on the premise that the most common 3 letter words are 'THE'
+ * and 'AND'. It looks for 3 letter words within the string and tests their first 
+ * two letters. If the gap between them is equal to the gap between 'T' and 'H'
+ * for example, the program will use "string[i - 3] - 'T'" to determine a key.
+ * The standard decrpytion algorithm is then used to decrypt the string.
+ * This program has a few glaring limitations, however, which with time may be
+ * eliminated, for example if 'THE' or 'AND' is not in the message, 
+ * the program may well break. Fixing this by implementing diverse searching
+ * would be possible in a project with a longer time frame.
+ * 
+ */
+
 void rot_dec_noKey(void){
     int i, count, sc, ph, k, x, n;
     char str[200];
@@ -310,43 +324,45 @@ void rot_dec_noKey(void){
     {
         fscanf(input, "%[^\n]s", str); //assign characters read from the file to str
     }
-    for(n = 0; str[n] != '\0'; n++) 
+    for(n = 0; str[n] != '\0'; n++) //searches the string
     {         
-        if(str[n] <= 90 && str[n] >= 65) 
+        if(str[n] <= 90 && str[n] >= 65) //counts capital letters between non-capital letters
         {
             count++;
         }
-        else if(count == 3)
+        else if(count == 3) //when there are 3 capital letters between the non-capital letters
         {
             if ((str[n - 3] - str[n - 2]) == 'T' - 'H' || (str[n - 3] - str[n - 2] - 26) == 'T' - 'H'){
-                ph = str[n - 3] - 'T';
-                if (ph < 0)
+                ph = str[n - 3] - 'T'; //test if the space between them is the same as the space between
+                //'T' and 'H' (-26 is added to deal with rotation issues)
+                if (ph < 0) // this + 26 is also to deal with negative number/rotation issues
                 {
                     ph = ph + 26;
                 }
-                sc = 1;
+                sc = 1; //used to activate the switch case
                 
             }
             else if ((str[n - 3] - str[n - 2]) == 'A' - 'N' || (str[n - 3] - str[n - 2] - 26) == 'A' - 'N'){
-                ph = str[n - 3] - 'A';
-                if (ph < 0)
+                ph = str[n - 3] - 'A';//test if the space between them is the same as the space between
+                //'A' and 'N' (-26 is added to deal with rotation issues)
+                if (ph < 0) // this + 26 is also to deal with negative number/rotation issues
                 {
                     ph = ph + 26;
                 }
-                sc = 2;
+                sc = 2; //also activates the switch case
             }
             else 
             {
-            count = 0;
+            count = 0; //keeps counting if 3 letter word isn't "AND" or "THE"
             }
 
         }
         else
         {
-            count = 0;
+            count = 0; //keeps counting if the word isn't 3 letters
         }
     }
-    switch (sc){
+    switch (sc){ //tells the user if decryption unsuccessful 
     case 1:
         k = ph;
     break;
@@ -354,7 +370,7 @@ void rot_dec_noKey(void){
         k = ph;
     break;
     default:
-        printf("decryption unavailable");
+        printf("decryption unsuccessful");
     }
     for(i = 0; str[i] != '\0'; i++) //for each letter in str until it is null-terminated
     {         
